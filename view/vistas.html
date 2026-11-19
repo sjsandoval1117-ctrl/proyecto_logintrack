@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LogiTrack WMS | Panel de Control</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body class="dashboard-body">
+
+    <div id="toast-container"></div>
+
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <div class="logo-box"><i data-lucide="boxes"></i></div>
+            <div>
+                <h2>LogiTrack</h2>
+                <span class="badge-pastel">WMS v1.0</span>
+            </div>
+        </div>
+
+        <nav class="nav-menu">
+            <button class="nav-item active" data-tab="bodegas">
+                <i data-lucide="warehouse"></i> Bodegas
+            </button>
+            <button class="nav-item" data-tab="productos">
+                <i data-lucide="package"></i> Productos
+            </button>
+            <button class="nav-item" data-tab="movimientos">
+                <i data-lucide="arrow-left-right"></i> Movimientos
+            </button>
+            <button class="nav-item" data-tab="auditorias">
+                <i data-lucide="shield-check"></i> Auditorías
+            </button>
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="user-pill">
+                <div class="status-dot"></div>
+                <span id="user-display">Sara17</span>
+                <button class="icon-btn" id="btn-copy-token" title="Copiar Token JWT">
+                    <i data-lucide="key"></i>
+                </button>
+            </div>
+            <a href="http://localhost:8080/swagger-ui/index.html" target="_blank" class="btn-outline">
+                <i data-lucide="external-link"></i> Swagger UI
+            </a>
+            <button id="btn-logout" class="btn-danger-soft">
+                <i data-lucide="log-out"></i> Cerrar Sesión
+            </button>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <header class="top-header">
+            <div>
+                <h1 id="page-title">Gestión de Bodegas</h1>
+                <p id="page-subtitle">Administra las ubicaciones físicas y capacidades de almacenamiento</p>
+            </div>
+            <button class="btn-refresh" id="btn-refresh-data">
+                <i data-lucide="refresh-cw"></i> Actualizar
+            </button>
+        </header>
+
+        <section id="tab-bodegas" class="tab-section active">
+            <div class="grid-layout">
+                <div class="card form-card">
+                    <h3><i data-lucide="plus-circle"></i> Nueva Bodega</h3>
+                    <form id="form-bodega">
+                        <div class="input-group">
+                            <label>Nombre de la Bodega</label>
+                            <input type="text" id="bodega-nombre" placeholder="Ej: Bodega Central Floridablanca" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Ubicación</label>
+                            <input type="text" id="bodega-ubicacion" placeholder="Ej: Zona Industrial Km 4" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Capacidad Máxima</label>
+                            <input type="number" id="bodega-capacidad" placeholder="Ej: 1000" min="1" required>
+                        </div>
+                        <button type="submit" class="btn-primary">Guardar Bodega</button>
+                    </form>
+                </div>
+
+                <div class="card table-card">
+                    <h3>Bodegas Registradas</h3>
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nombre</th>
+                                    <th>Ubicación</th>
+                                    <th>Capacidad</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tabla-bodegas"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="tab-productos" class="tab-section">
+            <div class="grid-layout">
+                <div class="card form-card">
+                    <h3><i data-lucide="package-plus"></i> Nuevo Producto</h3>
+                    <form id="form-producto">
+                        <div class="input-group">
+                            <label>Nombre del Producto</label>
+                            <input type="text" id="prod-nombre" placeholder="Ej: Monitor 24 pulgadas" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Categoría</label>
+                            <input type="text" id="prod-categoria" placeholder="Ej: Tecnología" required>
+                        </div>
+                        <div class="input-row">
+                            <div class="input-group">
+                                <label>Stock Inicial</label>
+                                <input type="number" id="prod-stock" placeholder="0" min="0" required>
+                            </div>
+                            <div class="input-group">
+                                <label>Precio Unitario</label>
+                                <input type="number" step="0.01" id="prod-precio" placeholder="0.00" min="0" required>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn-primary">Registrar Producto</button>
+                    </form>
+                </div>
+
+                <div class="card table-card">
+                    <h3>Catálogo e Inventario</h3>
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Producto</th>
+                                    <th>Categoría</th>
+                                    <th>Stock</th>
+                                    <th>Precio</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tabla-productos"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="tab-movimientos" class="tab-section">
+            <div class="grid-layout">
+                <div class="card form-card">
+                    <h3><i data-lucide="repeat"></i> Registrar Movimiento</h3>
+                    <form id="form-movimiento">
+                        <div class="input-group">
+                            <label>Tipo de Movimiento</label>
+                            <select id="mov-tipo" required>
+                                <option value="ENTRADA">ENTRADA (Ingreso a bodega)</option>
+                                <option value="SALIDA">SALIDA (Despacho de bodega)</option>
+                                <option value="TRANSFERENCIA">TRANSFERENCIA (Entre bodegas)</option>
+                            </select>
+                        </div>
+                        <div class="input-row">
+                            <div class="input-group">
+                                <label>ID Producto</label>
+                                <input type="number" id="mov-producto-id" placeholder="Ej: 1" required>
+                            </div>
+                            <div class="input-group">
+                                <label>Cantidad</label>
+                                <input type="number" id="mov-cantidad" placeholder="Ej: 10" min="1" required>
+                            </div>
+                        </div>
+                        <div class="input-group" id="grupo-origen" style="display: none;">
+                            <label>ID Bodega Origen</label>
+                            <input type="number" id="mov-origen-id" placeholder="ID Bodega Origen">
+                        </div>
+                        <div class="input-group" id="grupo-destino">
+                            <label>ID Bodega Destino</label>
+                            <input type="number" id="mov-destino-id" placeholder="ID Bodega Destino">
+                        </div>
+                        <button type="submit" class="btn-primary">Procesar Movimiento</button>
+                    </form>
+                </div>
+
+                <div class="card table-card">
+                    <h3>Historial de Movimientos</h3>
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Tipo</th>
+                                    <th>Producto</th>
+                                    <th>Cantidad</th>
+                                    <th>Fecha</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tabla-movimientos"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="tab-auditorias" class="tab-section">
+            <div class="card full-card">
+                <div class="card-header-flex">
+                    <h3><i data-lucide="history"></i> Trazabilidad y Auditoría del Sistema</h3>
+                    <span class="pill-lavender">Registro Automático Activo</span>
+                </div>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Acción</th>
+                                <th>Responsable</th>
+                                <th>Detalle</th>
+                                <th>Fecha y Hora</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabla-auditorias"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="../js/app.js"></script>
+</body>
+</html>

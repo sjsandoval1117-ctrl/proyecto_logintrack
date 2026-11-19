@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LogiTrack</title>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        * { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { margin: 0; background-color: #f8fafc; color: #334155; }
+        .btn-primary { background: #6366f1; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; transition: background 0.2s; }
+        .btn-primary:hover { background: #4f46e5; }
+        input, select { font-size: 0.9rem; }
+    </style>
+</head>
+<body>
+
+    <div id="login-card-container" style="display: flex; justify-content: center; align-items: center; height: 100vh; background: #f1f5f9;">
+        <div style="background: white; padding: 2.5rem; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); width: 100%; max-width: 400px;">
+            <h2 style="margin-top: 0; color: #1e293b; text-align: center; margin-bottom: 1.5rem;">LogiTrack WMS</h2>
+            <form id="login-form">
+                <div style="margin-bottom: 1rem;">
+                    <label style="display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.3rem;">Usuario</label>
+                    <input type="text" id="username" placeholder="Ingresa tu usuario" required style="width: 100%; padding: 0.7rem; border: 1px solid #cbd5e1; border-radius: 6px;">
+                </div>
+                <div style="margin-bottom: 1.5rem;">
+                    <label style="display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.3rem;">Contraseña</label>
+                    <input type="password" id="password" placeholder="••••••••" required style="width: 100%; padding: 0.7rem; border: 1px solid #cbd5e1; border-radius: 6px;">
+                </div>
+                <button type="submit" class="btn-primary" style="width: 100%; padding: 0.75rem;">Ingresar al Sistema</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="dashboard-container" style="display: none; padding: 2rem; max-width: 1200px; margin: 0 auto;">
+        
+        <header style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; background: white; padding: 1rem 1.5rem; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+            <div>
+                <h1 style="margin: 0; font-size: 1.5rem; color: #1e293b;">LogiTrack</h1>
+                <p style="margin: 0.2rem 0 0 0; font-size: 0.9rem; color: #64748b;">Bienvenida, <span id="user-display" style="font-weight: 600; color: #6366f1;">Usuario</span></p>
+            </div>
+            <button id="btn-logout" style="background: #ef4444; color: white; border: none; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; font-weight: 600;">Cerrar Sesión</button>
+        </header>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
+            <div style="background: white; padding: 1.2rem; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                <span style="font-size: 0.85rem; color: #64748b; font-weight: 600;">Bodegas</span>
+                <h2 id="total-bodegas" style="margin: 0.5rem 0 0 0; font-size: 1.8rem; color: #1e293b;">0</h2>
+            </div>
+            <div style="background: white; padding: 1.2rem; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                <span style="font-size: 0.85rem; color: #64748b; font-weight: 600;">Productos</span>
+                <h2 id="total-productos" style="margin: 0.5rem 0 0 0; font-size: 1.8rem; color: #1e293b;">0</h2>
+            </div>
+            <div style="background: white; padding: 1.2rem; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                <span style="font-size: 0.85rem; color: #64748b; font-weight: 600;">Movimientos</span>
+                <h2 id="total-movimientos" style="margin: 0.5rem 0 0 0; font-size: 1.8rem; color: #1e293b;">0</h2>
+            </div>
+            <div style="background: white; padding: 1.2rem; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                <span style="font-size: 0.85rem; color: #64748b; font-weight: 600;">Auditorías</span>
+                <h2 id="total-auditorias" style="margin: 0.5rem 0 0 0; font-size: 1.8rem; color: #1e293b;">0</h2>
+            </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(500px, 1fr)); gap: 1.5rem;">
+            
+            <div style="background: #fff; padding: 1.5rem; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                <h3 style="margin-top: 0; color: #1e293b;">Gestión de Bodegas</h3>
+                <form id="bodega-form" style="margin-bottom: 1rem;">
+                    <input type="hidden" id="bodega-id">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-bottom: 0.75rem;">
+                        <input type="text" id="nombre-bodega" placeholder="Nombre de bodega" required style="padding: 0.6rem; border: 1px solid #cbd5e1; border-radius: 6px;">
+                        <input type="text" id="ubicacion-bodega" placeholder="Ubicación" required style="padding: 0.6rem; border: 1px solid #cbd5e1; border-radius: 6px;">
+                        <input type="number" id="capacidad-bodega" placeholder="Capacidad (Ej: 100)" min="1" required style="padding: 0.6rem; border: 1px solid #cbd5e1; border-radius: 6px;">
+                        <input type="text" id="encargado-bodega" placeholder="Encargado" required style="padding: 0.6rem; border: 1px solid #cbd5e1; border-radius: 6px;">
+                    </div>
+                    <button type="submit" class="btn-primary" style="width: 100%; padding: 0.6rem;" id="btn-guardar-bodega">Guardar Bodega</button>
+                </form>
+                <div style="max-height: 220px; overflow-y: auto;">
+                    <table style="width: 100%; border-collapse: collapse; font-size: 0.9rem;" id="tabla-bodegas">
+                        <thead>
+                            <tr style="border-bottom: 2px solid #e2e8f0; text-align: left; color: #475569;">
+                                <th style="padding: 0.5rem;">Bodega / Ubicación</th>
+                                <th style="padding: 0.5rem; text-align: right;">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div style="background: #fff; padding: 1.5rem; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                <h3 style="margin-top: 0; color: #1e293b;">Gestión de Productos</h3>
+                <form id="producto-form" style="margin-bottom: 1rem;">
+                    <input type="hidden" id="producto-id">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-bottom: 0.75rem;">
+                        <input type="text" id="nombre-producto" placeholder="Nombre del producto" required style="padding: 0.6rem; border: 1px solid #cbd5e1; border-radius: 6px;">
+                        <input type="text" id="categoria-producto" placeholder="Categoría" required style="padding: 0.6rem; border: 1px solid #cbd5e1; border-radius: 6px;">
+                        <input type="number" id="stock-producto" placeholder="Stock inicial" min="0" required style="padding: 0.6rem; border: 1px solid #cbd5e1; border-radius: 6px;">
+                        <input type="number" id="precio-producto" placeholder="Precio ($)" step="0.01" min="0" required style="padding: 0.6rem; border: 1px solid #cbd5e1; border-radius: 6px;">
+                    </div>
+                    <button type="submit" class="btn-primary" style="width: 100%; padding: 0.6rem;" id="btn-guardar-producto">Guardar Producto</button>
+                </form>
+                <div style="max-height: 220px; overflow-y: auto;">
+                    <table style="width: 100%; border-collapse: collapse; font-size: 0.9rem;" id="tabla-productos">
+                        <thead>
+                            <tr style="border-bottom: 2px solid #e2e8f0; text-align: left; color: #475569;">
+                                <th style="padding: 0.5rem;">Producto</th>
+                                <th style="padding: 0.5rem;">Stock / Precio</th>
+                                <th style="padding: 0.5rem; text-align: right;">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div style="background: #fff; padding: 1.5rem; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                <h3 style="margin-top: 0; color: #1e293b;">Registro de Movimientos</h3>
+                <form id="movimiento-form" style="margin-bottom: 1rem;">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-bottom: 0.75rem;">
+                        <select id="tipo-movimiento" required style="padding: 0.6rem; border: 1px solid #cbd5e1; border-radius: 6px;">
+                            <option value="ENTRADA">ENTRADA</option>
+                            <option value="SALIDA">SALIDA</option>
+                            <option value="TRANSFERENCIA">TRANSFERENCIA</option>
+                        </select>
+                        <input type="text" id="bodega-destino" placeholder="Bodega Destino" required style="padding: 0.6rem; border: 1px solid #cbd5e1; border-radius: 6px;">
+                        <input type="text" id="bodega-origen" placeholder="Bodega Origen (Opt)" style="padding: 0.6rem; border: 1px solid #cbd5e1; border-radius: 6px;">
+                        <input type="number" id="cantidad-movimiento" placeholder="Cantidad (Mín 1)" min="1" required style="padding: 0.6rem; border: 1px solid #cbd5e1; border-radius: 6px;">
+                        <input type="number" id="producto-id" placeholder="ID Producto" required style="padding: 0.6rem; border: 1px solid #cbd5e1; border-radius: 6px; grid-column: span 2;">
+                    </div>
+                    <button type="submit" class="btn-primary" style="width: 100%; padding: 0.6rem;">Registrar Movimiento</button>
+                </form>
+                <div style="max-height: 220px; overflow-y: auto;">
+                    <table style="width: 100%; border-collapse: collapse; font-size: 0.9rem;" id="tabla-movimientos">
+                        <thead>
+                            <tr style="border-bottom: 2px solid #e2e8f0; text-align: left; color: #475569;">
+                                <th style="padding: 0.5rem;">Tipo / Destino</th>
+                                <th style="padding: 0.5rem;">Cant.</th>
+                                <th style="padding: 0.5rem; text-align: right;">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div style="background: #fff; padding: 1.5rem; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                <h3 style="margin-top: 0; color: #1e293b;">Auditorías del Sistema</h3>
+                <p style="margin: 0 0 1rem 0; font-size: 0.8rem; color: #64748b;">Registros de actividad generados por el backend.</p>
+                <div style="max-height: 280px; overflow-y: auto;">
+                    <table style="width: 100%; border-collapse: collapse; font-size: 0.9rem;" id="tabla-auditorias">
+                        <thead>
+                            <tr style="border-bottom: 2px solid #e2e8f0; text-align: left; color: #475569;">
+                                <th style="padding: 0.5rem;">Detalle de Operación / Entidad</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
