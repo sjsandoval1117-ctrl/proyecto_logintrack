@@ -1,3 +1,4 @@
+
 package com.logintrack.logintrack_backend.Controller;
 
 import com.logintrack.logintrack_backend.Model.Bodega;
@@ -21,48 +22,50 @@ public class BodegaController {
     @Autowired
     private AuditoriaService auditoriaService;
 
-    private String getUsuarioActual() {
-        return SecurityContextHolder.getContext().getAuthentication().getName();
-    }
-
     @GetMapping
-    public List<Bodega> listar() {
+    public List<Bodega> listarBodegas() {
         return bodegaRepository.findAll();
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<Bodega> obtenerBodega(@PathVariable Long id) {
+        return bodegaRepository.findById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
     @PostMapping
-    public ResponseEntity<Bodega> crear(@Valid @RequestBody Bodega bodega) {
-        Bodega guardada = bodegaRepository.save(bodega);
-        auditoriaService.registrarAuditoria("INSERT", "BODEGA", getUsuarioActual(), null, guardada);
-        return ResponseEntity.ok(guardada);
+    public ResponseEntity<Bodega> crearBodega(@Valid @RequestBody Bodega bodega) {
+        Bodega nuevaBodega = bodegaRepository.save(bodega);
+        registrarAuditoria("CREAR_BODEGA", "Bodega creada: " + nuevaBodega.getNombre());
+        return ResponseEntity.ok(nuevaBodega);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Bodega> actualizar(@PathVariable Long id, @Valid @RequestBody Bodega detalles) {
-        Bodega bodegaAntes = bodegaRepository.findById(id).orElseThrow(() -> new RuntimeException("Bodega no encontrada"));
-        
-        Bodega antesCopia = new Bodega();
-        antesCopia.setId(bodegaAntes.getId());
-        antesCopia.setNombre(bodegaAntes.getNombre());
-        antesCopia.setUbicacion(bodegaAntes.getUbicacion());
-        antesCopia.setCapacidad(bodegaAntes.getCapacidad());
-        antesCopia.setEncargado(bodegaAntes.getEncargado());
-
-        bodegaAntes.setNombre(detalles.getNombre());
-        bodegaAntes.setUbicacion(detalles.getUbicacion());
-        bodegaAntes.setCapacidad(detalles.getCapacidad());
-        bodegaAntes.setEncargado(detalles.getEncargado());
-
-        Bodega actualizada = bodegaRepository.save(bodegaAntes);
-        auditoriaService.registrarAuditoria("UPDATE", "BODEGA", getUsuarioActual(), antesCopia, actualizada);
-        return ResponseEntity.ok(actualizada);
+    public ResponseEntity<Bodega> actualizarBodega(@PathVariable Long id, @Valid @RequestBody Bodega detallesBodega) {
+        return bodegaRepository.findById(id).map(bodega -> {
+            bodega.setNombre(detallesBodega.getNombre());
+            bodega.setUbicacion(detallesBodega.getUbicacion());
+            bodega.setCapacidad(detallesBodega.getCapacidad());
+            Bodega actualizada = bodegaRepository.save(bodega);
+            registrarAuditoria("ACTUALIZAR_BODEGA", "Bodega actualizada ID: " + id);
+            return ResponseEntity.ok(actualizada);
+        }).orElse(ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> eliminar(@PathVariable Long id) {
-        Bodega bodega = bodegaRepository.findById(id).orElseThrow(() -> new RuntimeException("Bodega no encontrada"));
-        bodegaRepository.delete(bodega);
-        auditoriaService.registrarAuditoria("DELETE", "BODEGA", getUsuarioActual(), bodega, null);
-        return ResponseEntity.ok("Bodega eliminada con éxito");
+    public ResponseEntity<?> eliminarBodega(@PathVariable Long id) {
+        return bodegaRepository.findById(id).map(bodega -> {
+            bodegaRepository.delete(bodega);
+            registrarAuditoria("ELIMINAR_BODEGA", "Bodega eliminada ID: " + id);
+            return ResponseEntity.ok().build();
+        }).orElse(ResponseEntity.notFound().build());
+    }
+
+    private void registrarAuditoria(String accion, String detalle) {
+        String usuario = SecurityContextHolder.getContext().getAuthentication() != null
+                ? SecurityContextHolder.getContext().getAuthentication().getName()
+                : "SISTEMA";
+        auditoriaService.registrarAccion(usuario, accion, detalle);
     }
 }

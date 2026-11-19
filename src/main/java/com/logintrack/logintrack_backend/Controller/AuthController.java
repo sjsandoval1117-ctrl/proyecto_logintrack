@@ -32,7 +32,7 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<?> registrarUsuario(@Valid @RequestBody Usuario usuario) {
         usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
-        usuario.setStatus("PENDIENTE"); // Requiere aprobación del admin
+        usuario.setStatus("PENDIENTE");
         if (usuario.getRole() == null) usuario.setRole("EMPLEADO");
         Usuario nuevo = usuarioRepository.save(usuario);
         return ResponseEntity.ok(nuevo);

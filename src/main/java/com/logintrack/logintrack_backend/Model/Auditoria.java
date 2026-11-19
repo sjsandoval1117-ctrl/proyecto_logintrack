@@ -13,10 +13,10 @@ public class Auditoria {
     private Long id;
 
     @Column(nullable = false)
-    private String tipoOperacion; // INSERT, UPDATE, DELETE
+    private String tipoOperacion;
 
     @Column(nullable = false)
-    private String entidadAfectada; // BODEGA, PRODUCTO, MOVIMIENTO
+    private String entidadAfectada;
 
     @Column(nullable = false)
     private String usuarioResponsable;
@@ -25,8 +25,8 @@ public class Auditoria {
     private LocalDateTime fechaHora = LocalDateTime.now();
 
     @Column(columnDefinition = "TEXT")
-    private String jsonAntes; // Null en INSERT
+    private String jsonAntes;
 
     @Column(columnDefinition = "TEXT")
-    private String jsonDespues; // Null en DELETE
+    private String jsonDespues;
 }

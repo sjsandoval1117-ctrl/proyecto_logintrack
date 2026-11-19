@@ -39,13 +39,11 @@ public class Config {
                 .cors(Customizer.withDefaults())
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        // Rutas públicas que no exigen token
+
                         .requestMatchers("/api/auth/**", "/v3/api-docs/**", "/swagger-ui/**").permitAll()
 
-                        // Permitir expresamente operaciones DELETE para usuarios autenticados en toda la API
                         .requestMatchers(HttpMethod.DELETE, "/api/**").authenticated()
 
-                        // Cualquier otra petición requiere autenticación
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

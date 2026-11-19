@@ -37,4 +37,15 @@ public class AuditoriaService {
             e.printStackTrace();
         }
     }
+
+    public void registrarAccion(String usuario, String accion, String detalle) {
+        Auditoria auditoria = new Auditoria();
+        auditoria.setUsuarioResponsable(usuario);
+        auditoria.setTipoOperacion(accion);
+        auditoria.setEntidadAfectada("BODEGA");
+        auditoria.setJsonDespues(detalle);
+        auditoria.setFechaHora(LocalDateTime.now());
+
+        auditoriaRepository.save(auditoria);
+    }
 }
