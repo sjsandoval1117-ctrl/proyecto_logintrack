@@ -1,11 +1,29 @@
-# LogiTrack WMS Backend & Frontend
+# LogiTrack — Sistema Integral de Gestión Logística y Auditoría de Inventario
 
-API REST en **Spring Boot 3.2.5** con Java 21, MySQL (normalizado en 3FN), seguridad con Spring Security + JWT, solicitudes de registro con aprobación de administrador, auditoría completa con JPA (registrando JSON de estado `antes` y `después`), manejo global de excepciones con `@ControllerAdvice`, validaciones y frontend básico en HTML/CSS/JS.
+![Java](https://img.shields.io/badge/Java-17%2B-ED8B00?style=flat-square&logo=openjdk&logoColor=white)
+![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.x-6DB33F?style=flat-square&logo=springboot&logoColor=white)
+![Spring Security](https://img.shields.io/badge/Spring_Security-JWT_%2B_BCrypt-6DB33F?style=flat-square&logo=springsecurity&logoColor=white)
+![MySQL](https://img.shields.io/badge/MySQL-8.0-4479A1?style=flat-square&logo=mysql&logoColor=white)
+![Frontend](https://img.shields.io/badge/Frontend-HTML5_%7C_CSS3_%7C_JS-F7DF1E?style=flat-square&logo=javascript&logoColor=black)
 
-## Instrucciones de Instalación y Ejecución:
-1. Crear base de datos en MySQL: `logintrack_db`.
-2. Ejecutar el script `schema.sql` ubicado en `src/main/resources/`.
-3. Abrir el proyecto en IntelliJ IDEA como proyecto Maven.
-4. Ejecutar la clase `LogintrackBackendApplication.java` (el puerto por defecto es `8080`).
-5. Se creará automáticamente un administrador por defecto (`Sara17` / `password123`).
-6. Abrir los archivos en la carpeta `frontend/` en el navegador para probar el login y el dashboard de stock bajo.
+Plataforma web full-stack diseñada para el control operativo de bodegas, gestión de movimientos de inventario y trazabilidad de auditoría en tiempo real. El repositorio sigue una arquitectura desacoplada que separa la capa de presentación (`frontend-vs`) de la API RESTful y persistencia (`backend-intellij`).
+
+---
+
+## Arquitectura y Estructura del Repositorio
+
+```text
+proyecto_logintrack/
+├── frontend-vs/                 # Cliente Web (SPA / Vistas Modulares)
+│   ├── Index.html               # Punto de entrada y vista de autenticación
+│   ├── css/                     # Hojas de estilo y diseño responsivo
+│   ├── js/                      # Consumo de API REST, manejo de tokens y lógica UI
+│   └── view/                    # Módulos y vistas internas del sistema
+├── backend-intellij/            # Servicio Backend (API RESTful en Spring Boot)
+│   ├── src/
+│   │   └── main/
+│   │       ├── java/            # Controladores, Servicios, Repositorios, Entidades, DTOs y Seguridad
+│   │       └── resources/       # Configuración de aplicación (application.properties / yml)
+│   └── pom.xml                  # Gestión de dependencias y construcción con Maven
+├── .gitignore
+└── README.md
