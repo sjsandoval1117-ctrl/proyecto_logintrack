@@ -6,7 +6,7 @@
 ![MySQL](https://img.shields.io/badge/MySQL-8.0-4479A1?style=flat-square&logo=mysql&logoColor=white)
 ![Frontend](https://img.shields.io/badge/Frontend-HTML5_%7C_CSS3_%7C_JS-F7DF1E?style=flat-square&logo=javascript&logoColor=black)
 
-Plataforma web full-stack diseñada para el control operativo de bodegas, gestión de movimientos de inventario y trazabilidad de auditoría en tiempo real. El repositorio sigue una arquitectura desacoplada que separa la capa de presentación (`frontend-vs`) de la API RESTful y persistencia (`backend-intellij`).
+Plataforma web full-stack diseñada para el control operativo de bodegas, gestión de movimientos de inventario y trazabilidad de auditoría en tiempo real. El repositorio sigue una arquitectura desacoplada que separa la capa de presentación (`frontend-vs`) de la API RESTful en Spring Boot (`src/main/java/com/logintrack/logintrack_backend`) y el script de base de datos (`proyecto sql completo.sql`).
 
 ---
 
