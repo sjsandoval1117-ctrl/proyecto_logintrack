@@ -24,3 +24,32 @@ Con el servidor backend en ejecución en el puerto `8080`, inicie el túnel ejec
 
 ```bash
 cloudflared tunnel --url http://localhost:8080
+
+proyecto_logintrack/
+├── src/
+│   ├── main/
+│   │   ├── java/
+│   │   │   └── com/logintrack/logintrack_backend/
+│   │   │       ├── Controller/          # AuditoriaController, AuthController, BodegaController, MovimientoController, ProductoController
+│   │   │       ├── Exception/           # GlobalExceptionHandler
+│   │   │       ├── Model/               # Auditoria, Bodega, Movimiento, Producto, Usuario
+│   │   │       ├── Repository/          # AuditoriaRepository, BodegaRepository, MovimientoRepository, ProductoRepository, UsuarioRepository
+│   │   │       ├── Security/            # Config, JwtRequestFilter, JwtUtil
+│   │   │       ├── Service/             # AuditoriaService
+│   │   │       ├── CorsConfig.java      # Configuración CORS
+│   │   │       └── LogintrackBackendApplication.java
+│   │   └── resources/                   # Archivos de configuración de la aplicación
+│   └── ...
+├── target/                              # Artefactos compilados por Maven
+├── pom.xml                              # Dependencias y configuración de Maven
+├── frontend-vs/                         # Cliente web (vistas, estilos y scripts)
+├── .gitignore
+├── proyecto sql completo.sql            # Script completo de base de datos
+└── README.md
+
+
+
+
+
+
+
