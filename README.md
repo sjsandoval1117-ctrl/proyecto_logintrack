@@ -14,7 +14,7 @@ Plataforma web full-stack diseñada para el control operativo de bodegas, gesti�
 
 Durante las sesiones de pruebas, demostraciones o revisiones externas, el acceso al backend local (`http://localhost:8080`) se expone mediante **Cloudflare Tunnel (`cloudflared`)** en modalidad rápida. Por esta razón, se debe tener en cuenta lo siguiente:
 
-- **Carácter dinámico de la URL base:** Cada vez que se inicia o reinicia el túnel, Cloudflare asigna una nueva dirección pública temporal (`https://<subdominio-aleatorio>.trycloudflare.com`), por lo que el enlace no permanece constante entre ejecuciones.
+- **Carácter dinámico de la URL base:** Cada vez que se inicia o reinicia el túnel, Cloudflare asigna una nueva dirección pública temporal (por ejemplo, `https://everyone-hiring-grant-roommate.trycloudflare.com`), por lo que el enlace no permanece constante entre ejecuciones.
 - **Vigencia limitada al ciclo del túnel:** Si se cierra la consola donde se ejecuta el túnel o se genera una nueva sesión, la URL anterior deja de estar disponible y pierde validez para futuras consultas.
 - **Actualización obligatoria en el cliente:** Tras cada reinicio del túnel, es necesario copiar la nueva URL generada y actualizar la configuración base (`API_BASE`) en el frontend (sin barra inclinada `/` al final) antes de realizar pruebas de autenticación o consumo de endpoints.
 
