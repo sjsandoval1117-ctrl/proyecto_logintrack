@@ -9,6 +9,7 @@
 Plataforma web full-stack diseñada para el control operativo de bodegas, gestión de movimientos de inventario y trazabilidad de auditoría en tiempo real. El repositorio sigue una arquitectura desacoplada que separa la capa de presentación (`frontend-vs`) de la API RESTful y persistencia (`backend-intellij`).
 
 ---
+## LINK:https://decisions-config-lottery-contains.trycloudflare.com
 
 ## Arquitectura y Estructura del Repositorio
 
